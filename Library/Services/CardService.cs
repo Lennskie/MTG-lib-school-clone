@@ -26,6 +26,17 @@ namespace mtg_lib.Library.Services
             return GetCards().Take(100);
         }
 
-        
+        public Card? GetCardFromId(string cardId)
+        {
+            IEnumerable<Card> cards = GetCards();
+
+            //return cards.First(c => c.MtgId == cardId);
+
+            return cards.SingleOrDefault(c => c.MtgId == cardId);
+
+
+        }
+
+
     }    
 }
