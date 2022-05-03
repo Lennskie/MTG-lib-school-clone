@@ -24,27 +24,17 @@ namespace mtg_lib.Library.Services
             
             // 1 Basic Land
             IEnumerable<Card> basicCard = cards.Where(c => c.Type.Contains("Land")).OrderBy(c =>  r.Next(cards.Count() - 1)).Take(1);
-            Console.WriteLine("Count: " + basicCard.Count());
-            
+
             // 10 Commons
             IEnumerable<Card> commonCards = cards.Where(c => c.RarityCode == "C").OrderBy(c =>  r.Next(cards.Count() - 1)).Take(10);
-            Console.WriteLine("Count: " + commonCards.Count());
-            
+
             // 3 Uncommon
             IEnumerable<Card> uncommonCards = cards.Where(c => c.RarityCode == "U").OrderBy(c =>  r.Next(cards.Count() - 1)).Take(3);
-            Console.WriteLine("Count: " + uncommonCards.Count());
-            
+
             // 1 is rare or mythic
             IEnumerable<Card> rareOrMythicCard = cards.Where(c => c.RarityCode is "R" or "M").OrderBy(c => r.Next(cards.Count() - 1)).Take(1);
-            Console.WriteLine("Count: " + rareOrMythicCard.Count());
-            
-            IEnumerable<Card> cardPacks = basicCard.Concat(commonCards).Concat(uncommonCards).Concat(rareOrMythicCard);
-            
-            // TODO: Find a better solution for this ...
-            foreach (var item in cardPacks)
-            {
-                Console.WriteLine();
-            }
+
+            IEnumerable<Card> cardPacks = basicCard.Concat(commonCards).Concat(uncommonCards).Concat(rareOrMythicCard).Select(c => c).ToList();
 
             return cardPacks;
         }
