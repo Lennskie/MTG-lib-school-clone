@@ -20,6 +20,7 @@ namespace mtg_lib.Library.Services
             
             // 15 Cards
             var r = new Random();
+            // TODO: Check if the cards packs contain the right amount of cards for each option ...
             
             // 1 Basic Land
             IEnumerable<Card> basicCard = cards.Where(c => c.Type.Contains("Land")).OrderBy(c =>  r.Next(cards.Count() - 1)).Take(1);
@@ -36,14 +37,14 @@ namespace mtg_lib.Library.Services
             // 1 is rare or mythic
             IEnumerable<Card> rareOrMythicCard = cards.Where(c => c.RarityCode is "R" or "M").OrderBy(c => r.Next(cards.Count() - 1)).Take(1);
             Console.WriteLine("Count: " + rareOrMythicCard.Count());
-
             
-            IEnumerable<Card> cardPacks = cards.OrderBy(c => r.Next(cards.Count() - 1)).Take(15);
+            IEnumerable<Card> cardPacks = basicCard.Concat(commonCards).Concat(uncommonCards).Concat(rareOrMythicCard);
             
-            /*IEnumerable<Card> cardPacks = basicCard;
-            cardPacks.Concat(commonCards);
-            cardPacks.Concat(uncommonCards);
-            cardPacks.Concat(rareOrMythicCard);*/
+            // TODO: Find a better solution for this ...
+            foreach (var item in cardPacks)
+            {
+                Console.WriteLine();
+            }
 
             return cardPacks;
         }
