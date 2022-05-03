@@ -47,6 +47,16 @@ namespace mtg_lib.Library.Services
         }
 
 
+        public IEnumerable<Card> retrievePacks()
+        {
+            return new List<Card>();
+        }
+
+
+        public IEnumerable<Card> retrievePackInfo(string packId)
+        {
+            return new List<Card>();
+        }
 
     }
 }
