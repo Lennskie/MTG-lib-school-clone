@@ -45,8 +45,6 @@ namespace mtg_lib.Library.Services
 
             if (variationsString != null)
             {
-                Console.WriteLine("In this function!");
-                
                 char[] charsToTrim = {'[', ']', '"'};
                 
                 var splitVariations = card?.Variations?.Split(',');
@@ -61,5 +59,29 @@ namespace mtg_lib.Library.Services
 
             return variationsList;
         }
+
+
+        public string? GetImageFromVariations(Card card)
+        {
+            List<string> variations = RetrieveMtgIdsFromString(card);
+
+            if (variations.Count != 0)
+            {
+                string IdVariationCard = variations.First();
+
+                Card cardVariation = GetCards().Where(c => c.MtgId == IdVariationCard).First();
+
+                if (cardVariation.OriginalImageUrl != null)
+                {
+                    //Console.WriteLine("Returning new image Url");
+                    return cardVariation.OriginalImageUrl;
+                }
+                
+            }
+            
+            //Console.WriteLine("No new image url to return!");
+            return null;
+        }
+        
     }
 }
