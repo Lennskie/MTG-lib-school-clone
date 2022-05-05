@@ -21,12 +21,31 @@ public class CoinService
     {
         return context.UserCoins.ToList();
     }
+
+    public void CreateUserCoinForUser(string userId)
+    {
+        UserCoin userCoin = new UserCoin();
+        userCoin.UserId = userId;
+        
+        Console.WriteLine("Creating userCoin for user");
+
+        context.Add(userCoin);
+        context.SaveChanges();
+    }
     
     private UserCoin GetUserCoinFromId(string userId)
     {
         IEnumerable<UserCoin> userCoins = GetUserCoins();
 
         return userCoins.First(uc => uc.UserId == userId);
+    }
+
+
+    public int GetUserCoinBalance(string userId)
+    {
+        IEnumerable<UserCoin> userCoins = GetUserCoins();
+
+        return userCoins.Where(uc => uc.UserId == userId).Select(c => c.Coins).First();
     }
     
     
