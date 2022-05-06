@@ -49,27 +49,28 @@ public class CoinService
     }
     
     
-    public bool checkIfReceivedDefaultCoins(string userId)
+    public bool CheckIfReceivedDefaultCoins(string userId)
     {
         UserCoin userCoin = GetUserCoinFromId(userId);
 
         return userCoin.CoinsClaimed;
     }
 
-    public void receiveDefaultCoins(string userId)
+    public void ReceiveDefaultCoins(string userId)
     {
         UserCoin userCoin = GetUserCoinFromId(userId);
 
         if (!userCoin.CoinsClaimed)
         {
             userCoin.Coins += _defaultCoins;
+            userCoin.CoinsClaimed = true;
         }
 
         context.SaveChanges();
     }
 
 
-    public bool checkDailyCoinsClaimed(string userId)
+    public bool CheckDailyCoinsClaimed(string userId)
     {
         UserCoin userCoin = GetUserCoinFromId(userId);
 
@@ -81,23 +82,20 @@ public class CoinService
 
         if (difference.Value.Hours > 24)
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
-    public void addDailyCoins(string userId)
+    public void AddDailyCoins(string userId)
     {
         UserCoin userCoin = GetUserCoinFromId(userId);
 
-        DateTime? userCoinDataTime = userCoin.ClaimedTimeStamp;
-        
-        DateTime? currentDateTime = DateTime.Now;
-
-        if (checkDailyCoinsClaimed(userId))
+        if (CheckDailyCoinsClaimed(userId))
         {
             userCoin.Coins += _dailyCoins;
+            userCoin.ClaimedTimeStamp = DateTime.Now;
         }
 
         context.SaveChanges();

@@ -436,7 +436,8 @@ namespace mtg_lib.Library.Models
 
             modelBuilder.Entity<UserCoin>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.UserId)
+                    .HasName("usercoins_pk");
 
                 entity.HasIndex(e => e.UserId, "usercoins_userid_uindex")
                     .IsUnique();
@@ -446,7 +447,7 @@ namespace mtg_lib.Library.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne(d => d.User)
-                    .WithOne()
+                    .WithOne(p => p.UserCoin)
                     .HasForeignKey<UserCoin>(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("usercoins_aspnetusers_id_fk");
