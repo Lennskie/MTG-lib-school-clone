@@ -28,10 +28,13 @@ namespace mtg_lib.Library.Models
         public virtual DbSet<CardType> CardTypes { get; set; } = null!;
         public virtual DbSet<Color> Colors { get; set; } = null!;
         public virtual DbSet<Format> Formats { get; set; } = null!;
+        public virtual DbSet<Migration> Migrations { get; set; } = null!;
+        public virtual DbSet<PersonalAccessToken> PersonalAccessTokens { get; set; } = null!;
         public virtual DbSet<Rarity> Rarities { get; set; } = null!;
         public virtual DbSet<Set> Sets { get; set; } = null!;
         public virtual DbSet<Type> Types { get; set; } = null!;
         public virtual DbSet<UserCoin> UserCoins { get; set; } = null!;
+        public virtual DbSet<UserPack> UserPacks { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -359,6 +362,59 @@ namespace mtg_lib.Library.Models
                     .HasColumnName("updated_at");
             });
 
+            modelBuilder.Entity<Migration>(entity =>
+            {
+                entity.ToTable("migrations");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Batch).HasColumnName("batch");
+
+                entity.Property(e => e.Migration1)
+                    .HasMaxLength(255)
+                    .HasColumnName("migration");
+            });
+
+            modelBuilder.Entity<PersonalAccessToken>(entity =>
+            {
+                entity.ToTable("personal_access_tokens");
+
+                entity.HasIndex(e => e.Token, "personal_access_tokens_token_unique")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.TokenableType, e.TokenableId }, "personal_access_tokens_tokenable_type_tokenable_id_index");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Abilities).HasColumnName("abilities");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("timestamp(0) without time zone")
+                    .HasColumnName("created_at");
+
+                entity.Property(e => e.LastUsedAt)
+                    .HasColumnType("timestamp(0) without time zone")
+                    .HasColumnName("last_used_at");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Token)
+                    .HasMaxLength(64)
+                    .HasColumnName("token");
+
+                entity.Property(e => e.TokenableId).HasColumnName("tokenable_id");
+
+                entity.Property(e => e.TokenableType)
+                    .HasMaxLength(255)
+                    .HasColumnName("tokenable_type");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("timestamp(0) without time zone")
+                    .HasColumnName("updated_at");
+            });
+
             modelBuilder.Entity<Rarity>(entity =>
             {
                 entity.ToTable("rarities");
@@ -446,11 +502,25 @@ namespace mtg_lib.Library.Models
                     .HasColumnType("timestamp without time zone")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                entity.Property(e => e.CoinsClaimed).HasDefaultValueSql("false");
+
                 entity.HasOne(d => d.User)
                     .WithOne(p => p.UserCoin)
                     .HasForeignKey<UserCoin>(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("usercoins_aspnetusers_id_fk");
+            });
+
+            modelBuilder.Entity<UserPack>(entity =>
+            {
+                entity.HasKey(e => e.UserId)
+                    .HasName("userpacks_pk");
+
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.UserPack)
+                    .HasForeignKey<UserPack>(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("userpacks_aspnetusers_id_fk");
             });
 
             OnModelCreatingPartial(modelBuilder);
