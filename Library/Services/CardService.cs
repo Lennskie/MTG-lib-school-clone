@@ -40,13 +40,7 @@ namespace mtg_lib.Library.Services
         {
             IEnumerable<Card> cards = GetCards();
 
-            Console.WriteLine(cardName);
-
-            char[] charsToTrim = {'%', '2', '0', '=', '?', '+'};
-
-            var newName = cardName.Trim(charsToTrim);
-
-            return cards.SingleOrDefault(c => c.Name == newName);
+            return cards.Where(c => c.Name == cardName).First();
         }
 
         public List<string> RetrieveMtgIdsFromString(Card? card)
