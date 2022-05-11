@@ -36,6 +36,13 @@ namespace mtg_lib.Library.Services
             return cards.SingleOrDefault(c => c.MtgId == cardId);
         }
 
+        public Card? GetCardFromString(string cardName)
+        {
+            IEnumerable<Card> cards = GetCards();
+
+            return cards.Where(c => c.Name == cardName).First();
+        }
+
         public List<string> RetrieveMtgIdsFromString(Card? card)
         {
 

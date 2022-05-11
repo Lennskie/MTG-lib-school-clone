@@ -47,7 +47,7 @@ namespace mtg_lib.Library.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Artist>(entity =>
+            modelBuilder.Entity<Artist >(entity =>
             {
                 entity.ToTable("artists");
 
