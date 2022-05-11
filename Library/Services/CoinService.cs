@@ -102,4 +102,17 @@ public class CoinService
     }
 
 
+    public void DecreaseUserCoinBalance(string userId, int? amount)
+    {
+        UserCoin userCoin = GetUserCoinFromId(userId);
+
+        int coinBalance = userCoin.Coins;
+
+        userCoin.Coins = (int) (coinBalance - amount);
+
+        context.Update(userCoin);
+        context.SaveChanges();
+    }
+
+
 }
