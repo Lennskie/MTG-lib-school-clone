@@ -14,6 +14,37 @@ namespace mtg_lib.Library.Services
             context = new mtgdevContext();
         }
 
+        public IEnumerable<UserPack> GetUserPacks()
+        {
+            return context.UserPacks.ToList();
+        }
+
+        public UserPack GetUserPackFromUserId(string userId)
+        {
+            return GetUserPacks().First(c => c.UserId == userId);
+        }
+
+        public void CreateUserPackForUser(string userId)
+        {
+            UserPack usersPacks = new UserPack();
+            usersPacks.UserId = userId;
+        
+            Console.WriteLine("Creating userPack for user");
+
+            context.Add(usersPacks);
+            context.SaveChanges();
+        }
+
+        public void AddPackToUser(string userId, int amountOfPacksToAdd)
+        {
+            UserPack userPack = GetUserPackFromUserId(userId);
+
+            userPack.Packs += amountOfPacksToAdd;
+
+            context.Update(userPack);
+            context.SaveChanges();
+        }
+
         public IEnumerable<Card> CreateRandomPack(string rarity)
         {
             IEnumerable<Card> cards = cardService.GetCards();

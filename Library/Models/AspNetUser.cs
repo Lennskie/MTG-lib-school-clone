@@ -30,6 +30,7 @@ namespace mtg_lib.Library.Models
         public int AccessFailedCount { get; set; }
 
         public virtual UserCoin UserCoin { get; set; } = null!;
+        public virtual UserPack UserPack { get; set; } = null!;
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
