@@ -33,6 +33,7 @@ namespace mtg_lib.Library.Models
         public virtual DbSet<Rarity> Rarities { get; set; } = null!;
         public virtual DbSet<Set> Sets { get; set; } = null!;
         public virtual DbSet<Type> Types { get; set; } = null!;
+        public virtual DbSet<UserCard> UserCards { get; set; } = null!;
         public virtual DbSet<UserCoin> UserCoins { get; set; } = null!;
         public virtual DbSet<UserPack> UserPacks { get; set; } = null!;
 
@@ -47,7 +48,7 @@ namespace mtg_lib.Library.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Artist >(entity =>
+            modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("artists");
 
@@ -488,6 +489,26 @@ namespace mtg_lib.Library.Models
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("timestamp(0) without time zone")
                     .HasColumnName("updated_at");
+            });
+
+            modelBuilder.Entity<UserCard>(entity =>
+            {
+                entity.HasKey(e => e.UserId)
+                    .HasName("usercards_pk");
+
+                entity.Property(e => e.Cards).HasDefaultValueSql("0");
+
+                entity.HasOne(d => d.Card)
+                    .WithMany(p => p.UserCards)
+                    .HasForeignKey(d => d.CardId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("usercards_cards_id_fk");
+
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.UserCard)
+                    .HasForeignKey<UserCard>(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("table_name_aspnetusers_id_fk");
             });
 
             modelBuilder.Entity<UserCoin>(entity =>

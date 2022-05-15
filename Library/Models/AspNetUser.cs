@@ -29,6 +29,7 @@ namespace mtg_lib.Library.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
 
+        public virtual UserCard UserCard { get; set; } = null!;
         public virtual UserCoin UserCoin { get; set; } = null!;
         public virtual UserPack UserPack { get; set; } = null!;
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }

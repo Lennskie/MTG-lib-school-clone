@@ -9,6 +9,7 @@ namespace mtg_lib.Library.Models
         {
             CardColors = new HashSet<CardColor>();
             CardTypes = new HashSet<CardType>();
+            UserCards = new HashSet<UserCard>();
         }
 
         public long Id { get; set; }
@@ -40,5 +41,6 @@ namespace mtg_lib.Library.Models
         public virtual Set SetCodeNavigation { get; set; } = null!;
         public virtual ICollection<CardColor> CardColors { get; set; }
         public virtual ICollection<CardType> CardTypes { get; set; }
+        public virtual ICollection<UserCard> UserCards { get; set; }
     }
 }
