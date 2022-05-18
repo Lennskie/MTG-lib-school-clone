@@ -94,9 +94,29 @@ namespace mtg_lib.Library.Services
             IEnumerable<Card> cards = GetCards();
             List<Card> cardList = new List<Card>();
 
-            foreach(var card in cards){
-                if(card.RarityCode == rarity_code && card.ConvertedManaCost == converted_mana_cost && card.Power == power && card.Toughness == thoughness){
-                    cardList.Add(card);
+            if(rarity_code != "null"){
+                foreach(var card in cards){
+                if( card.RarityCode == rarity_code){
+                        cardList.Add(card);
+                    }
+                }
+            }if(converted_mana_cost != "null"){
+                foreach(var card in cards){
+                if( card.ConvertedManaCost == converted_mana_cost && !cardList.Contains(card)){
+                        cardList.Add(card);
+                    }
+                }
+            }if(power != "null"){
+                foreach(var card in cards){
+                if( card.Power == power && !cardList.Contains(card)){
+                        cardList.Add(card);
+                    }
+                }
+            }if(thoughness != "null"){
+                foreach(var card in cards ){
+                if( card.Toughness == thoughness && !cardList.Contains(card)){
+                        cardList.Add(card);
+                    }
                 }
             }
             return cardList;
