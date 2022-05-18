@@ -18,7 +18,6 @@ namespace mtg_lib.Library.Services
             return context.Cards.ToList();
         }
 
-
         public IEnumerable<Card> GetSetAmountOfCards(int amount)
         {
             if (amount != 0)
@@ -88,6 +87,19 @@ namespace mtg_lib.Library.Services
             
             //Console.WriteLine("No new image url to return!");
             return null;
+        }
+
+        public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness)
+        {
+            IEnumerable<Card> cards = GetCards();
+            List<Card> cardList = new List<Card>();
+
+            foreach(var card in cards){
+                if(card.RarityCode == rarity_code && card.ConvertedManaCost == converted_mana_cost && card.Power == power && card.Toughness == thoughness){
+                    cardList.Add(card);
+                }
+            }
+            return cardList;
         }
         
     }
