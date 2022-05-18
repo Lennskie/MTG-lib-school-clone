@@ -92,34 +92,42 @@ namespace mtg_lib.Library.Services
         public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness)
         {
             IEnumerable<Card> cards = GetCards();
-            List<Card> cardList = new List<Card>();
+            List<Card> cardListR = new List<Card>();   
+            List<Card> cardListM = new List<Card>();   
+            List<Card> cardListP = new List<Card>();         
+            List<Card> cardListT = new List<Card>();
 
             if(rarity_code != "null"){
                 foreach(var card in cards){
-                if( card.RarityCode == rarity_code){
-                        cardList.Add(card);
+                if( card.RarityCode == rarity_code && !cardListR.Contains(card)){
+                        cardListR.Add(card);
                     }
                 }
-            }if(converted_mana_cost != "null"){
+            }else if(converted_mana_cost != "null"){
                 foreach(var card in cards){
-                if( card.ConvertedManaCost == converted_mana_cost && !cardList.Contains(card)){
-                        cardList.Add(card);
+                if( card.ConvertedManaCost == converted_mana_cost && !cardListM.Contains(card)){
+                        cardListM.Add(card);
                     }
                 }
-            }if(power != "null"){
+            }else if(power != "null"){
                 foreach(var card in cards){
-                if( card.Power == power && !cardList.Contains(card)){
-                        cardList.Add(card);
+                if( card.Power == power && !cardListP.Contains(card)){
+                        cardListP.Add(card);
                     }
                 }
-            }if(thoughness != "null"){
+            }else if(thoughness != "null"){
                 foreach(var card in cards ){
-                if( card.Toughness == thoughness && !cardList.Contains(card)){
-                        cardList.Add(card);
+                if( card.Toughness == thoughness && !cardListT.Contains(card)){
+                        cardListT.Add(card);
                     }
                 }
             }
-            return cardList;
+            var endList = cardListR.ToHashSet();
+            endList.SymmetricExceptWith(cardListM); 
+            endList.SymmetricExceptWith(cardListP);
+            endList.SymmetricExceptWith(cardListT);
+            // TODO: fix this because filtering one thing works but multiple doesn't really
+            return endList.ToList();  
         }
 
         public List<String> getRarity(){
