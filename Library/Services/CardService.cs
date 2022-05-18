@@ -121,6 +121,58 @@ namespace mtg_lib.Library.Services
             }
             return cardList;
         }
-        
+
+        public List<String> getRarity(){
+            IEnumerable<Card> cards = GetCards();
+            List<string> rarityList = new List<string>();
+            foreach(var card in cards){
+                if(!rarityList.Contains(card.RarityCode) && card.RarityCode != null){
+                    rarityList.Add(card.RarityCode);
+                }
+            }
+            return rarityList.OrderBy(r=>r).ToList();
+        }
+
+        public List<int> getPower(){
+            IEnumerable<Card> cards = GetCards();
+            List<int> powerList = new List<int>();
+            foreach(var card in cards){
+                var value = 0;
+                int.TryParse(card.Power, out value);
+                if(!powerList.Contains(value) && card.Power != null){
+                    powerList.Add(value);
+                }
+            }
+            return powerList.OrderBy(p=>p).ToList();
+        }
+
+        public List<int> getThoughness(){
+            IEnumerable<Card> cards = GetCards();
+            List<int> thoughnessList = new List<int>();
+            foreach(var card in cards){
+                var value = 0;
+                int.TryParse(card.Toughness, out value);
+                if(!thoughnessList.Contains(value) && card.Toughness != null){
+                    thoughnessList.Add(value);
+                }
+            }
+            thoughnessList.Sort();
+            return thoughnessList;
+        }
+
+        public List<int> getManaCosts(){
+            IEnumerable<Card> cards = GetCards();
+            List<int> manaList = new List<int>();
+            foreach(var card in cards){
+                var value = 0;
+                int.TryParse(card.ConvertedManaCost, out value);
+                if(!manaList.Contains(value) && card.ConvertedManaCost != null){
+
+                    manaList.Add(value);
+                }
+            }
+            manaList.Sort();
+            return manaList;
+        }
     }
 }
