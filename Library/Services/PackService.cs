@@ -45,6 +45,21 @@ namespace mtg_lib.Library.Services
             context.SaveChanges();
         }
 
+        public void DecreasePackCountUser(string userId)
+        {
+            UserPack userPack = GetUserPackFromUserId(userId);
+
+            int newAmountOfPacks = userPack.Packs - 1;
+            if (newAmountOfPacks >= 0)
+            {
+                userPack.Packs -= 1;
+            }
+            // Silently "fail", so don't decrease with the request amount
+            
+            context.Update(userPack);
+            context.SaveChanges();
+        }
+
         public IEnumerable<Card> CreateRandomPack(string rarity)
         {
             IEnumerable<Card> cards = cardService.GetCards();

@@ -10,6 +10,7 @@ namespace mtg_lib.Library.Models
             AspNetUserClaims = new HashSet<AspNetUserClaim>();
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
             AspNetUserTokens = new HashSet<AspNetUserToken>();
+            UserCards = new HashSet<UserCard>();
             Roles = new HashSet<AspNetRole>();
         }
 
@@ -29,12 +30,12 @@ namespace mtg_lib.Library.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
 
-        public virtual UserCard UserCard { get; set; } = null!;
         public virtual UserCoin UserCoin { get; set; } = null!;
         public virtual UserPack UserPack { get; set; } = null!;
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual ICollection<UserCard> UserCards { get; set; }
 
         public virtual ICollection<AspNetRole> Roles { get; set; }
     }

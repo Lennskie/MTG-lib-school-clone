@@ -42,38 +42,39 @@ public class UserCardService
     {
         IEnumerable<UserCard> userCards =  GetUserCardsForUser(userId);
         
-        Console.WriteLine("In this function");
 
         foreach (var cardMtgId in cardMtgIds)
         {
             Card? card = _cardService.GetCardFromId(cardMtgId);
+            //Console.WriteLine("MtgID: " + cardMtgId + " Card Id: " + card.Id);
 
-            foreach (var userCard in userCards)
+            bool userCardPresence = userCards.Select(c => c.CardId).Contains(card.Id);
+
+            if (userCardPresence)
             {
-                if (userCard.CardId == card.Id)
-                {
-                    userCard.Cards += 1;
+                UserCard userCard = userCards.First(c => c.CardId == card.Id); 
+                
+                userCard.Cards += 1;
 
-                    context.UserCards.Update(userCard);
-                    context.SaveChanges();
+                context.UserCards.Update(userCard);
+                context.SaveChanges();
                     
-                    Console.WriteLine("Updating existing userCard");
-                }
-                else
-                {
-                    UserCard newUserCard = new UserCard();
-
-                    newUserCard.UserId = userId;
-                    newUserCard.CardId = card.Id;
-                    newUserCard.Cards = 1;
-
-                    context.UserCards.Add(newUserCard);
-                    context.SaveChanges();
-                    
-                    
-                    Console.WriteLine("Adding new UserCard");
-                }
+                //Console.WriteLine("Updating existing userCard");
             }
+            else
+            {
+                UserCard newUserCard = new UserCard();
+
+                newUserCard.UserId = userId;
+                newUserCard.CardId = card.Id;
+                newUserCard.Cards = 1;
+
+                context.UserCards.Add(newUserCard);
+                context.SaveChanges();
+                
+                //Console.WriteLine("Adding new UserCard");
+            }
+            
         }
     }
 

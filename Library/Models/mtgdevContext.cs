@@ -493,7 +493,7 @@ namespace mtg_lib.Library.Models
 
             modelBuilder.Entity<UserCard>(entity =>
             {
-                entity.HasKey(e => e.UserId)
+                entity.HasKey(e => new { e.CardId, e.UserId })
                     .HasName("usercards_pk");
 
                 entity.Property(e => e.Cards).HasDefaultValueSql("0");
@@ -505,8 +505,8 @@ namespace mtg_lib.Library.Models
                     .HasConstraintName("usercards_cards_id_fk");
 
                 entity.HasOne(d => d.User)
-                    .WithOne(p => p.UserCard)
-                    .HasForeignKey<UserCard>(d => d.UserId)
+                    .WithMany(p => p.UserCards)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("table_name_aspnetusers_id_fk");
             });
