@@ -10,6 +10,7 @@ namespace mtg_lib.Library.Models
             AspNetUserClaims = new HashSet<AspNetUserClaim>();
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
             AspNetUserTokens = new HashSet<AspNetUserToken>();
+            UserCards = new HashSet<UserCard>();
             Roles = new HashSet<AspNetRole>();
         }
 
@@ -34,6 +35,7 @@ namespace mtg_lib.Library.Models
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual ICollection<UserCard> UserCards { get; set; }
 
         public virtual ICollection<AspNetRole> Roles { get; set; }
     }
