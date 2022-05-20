@@ -91,43 +91,81 @@ namespace mtg_lib.Library.Services
 
         public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness)
         {
-            IEnumerable<Card> cards = GetCards();
-            List<Card> cardListR = new List<Card>();   
-            List<Card> cardListM = new List<Card>();   
-            List<Card> cardListP = new List<Card>();         
-            List<Card> cardListT = new List<Card>();
+            List<Card> cardListT = getThoughnessList(thoughness);
+            List<Card> cardListR = getRarityList(rarity_code);   
+            List<Card> cardListM = getManaList(converted_mana_cost);   
+            List<Card> cardListP = getPowerList(power);
 
-            if(rarity_code != "null"){
-                foreach(var card in cards){
-                if( card.RarityCode == rarity_code && !cardListR.Contains(card)){
-                        cardListR.Add(card);
-                    }
-                }
-            }else if(converted_mana_cost != "null"){
-                foreach(var card in cards){
-                if( card.ConvertedManaCost == converted_mana_cost && !cardListM.Contains(card)){
-                        cardListM.Add(card);
-                    }
-                }
-            }else if(power != "null"){
-                foreach(var card in cards){
-                if( card.Power == power && !cardListP.Contains(card)){
-                        cardListP.Add(card);
-                    }
-                }
-            }else if(thoughness != "null"){
+            Boolean T = false;
+            Boolean R = false;
+            Boolean M = false;
+            Boolean P = false;
+
+            if((cardListT!= null) && (!cardListT.Any())){
+                T = true;
+            }
+            if((cardListR!= null) && (!cardListR.Any())){
+                R = true;
+            }
+            if((cardListM!= null) && (!cardListM.Any())){
+                M = true;
+            }
+            if((cardListP!= null) && (!cardListP.Any())){
+                P = true;
+            }
+            Console.WriteLine("T: " + thoughness + " R: " + rarity_code + " M: " + converted_mana_cost + " P: " + power);
+            Console.WriteLine("T: " + T + " R: " + R + " M: " + M + " P: " + P);
+
+            var disjunction = new HashSet<Card>();
+            disjunction.SymmetricExceptWith(cardListR);
+            disjunction.SymmetricExceptWith(cardListM);
+            disjunction.SymmetricExceptWith(cardListP);
+            disjunction.SymmetricExceptWith(cardListT);
+            return disjunction;  
+        }
+
+        private List<Card> getThoughnessList(string thoughness){
+            IEnumerable<Card> cards = GetCards();
+            List<Card> cardListPartial = new List<Card>();
                 foreach(var card in cards ){
-                if( card.Toughness == thoughness && !cardListT.Contains(card)){
-                        cardListT.Add(card);
+                if(card.Toughness == thoughness && !cardListPartial.Contains(card)){
+                        cardListPartial.Add(card);
                     }
+            }
+            return cardListPartial;
+        }
+
+        private List<Card> getPowerList(string power){
+            IEnumerable<Card> cards = GetCards();
+            List<Card> cardListPartial = new List<Card>();
+                foreach(var card in cards ){
+                if(card.Power == power && !cardListPartial.Contains(card)){
+                        cardListPartial.Add(card);
+                    }
+                }
+            return cardListPartial;
+        }
+
+        private List<Card> getRarityList(string rarity_code){
+            IEnumerable<Card> cards = GetCards();
+            List<Card> cardListPartial = new List<Card>();
+            foreach(var card in cards ){
+            if(card.RarityCode == rarity_code && !cardListPartial.Contains(card)){
+                    cardListPartial.Add(card);
                 }
             }
-            var endList = cardListR.ToHashSet();
-            endList.SymmetricExceptWith(cardListM); 
-            endList.SymmetricExceptWith(cardListP);
-            endList.SymmetricExceptWith(cardListT);
-            // TODO: fix this because filtering one thing works but multiple doesn't really
-            return endList.ToList();  
+            return cardListPartial;
+        }
+
+        private List<Card> getManaList(string converted_mana_cost){
+            IEnumerable<Card> cards = GetCards();
+            List<Card> cardListPartial = new List<Card>();
+                foreach(var card in cards ){
+                if(card.ConvertedManaCost == converted_mana_cost && !cardListPartial.Contains(card)){
+                        cardListPartial.Add(card);
+                    }
+            }
+            return cardListPartial;
         }
 
         public List<String> getRarity(){
