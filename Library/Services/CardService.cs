@@ -91,47 +91,36 @@ namespace mtg_lib.Library.Services
 
         public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness)
         {
-            List<Card> cardListT = GetThoughnessList(thoughness);
             List<Card> cardListR = GetRarityList(rarity_code);   
             List<Card> cardListM = GetManaList(converted_mana_cost);   
             List<Card> cardListP = GetPowerList(power);
+            List<Card> cardListT = GetThoughnessList(thoughness);
 
-            var disjunction = new HashSet<Card>();
-            disjunction.SymmetricExceptWith(cardListR);
-            disjunction.SymmetricExceptWith(cardListM);
-            disjunction.SymmetricExceptWith(cardListP);
-            disjunction.SymmetricExceptWith(cardListT);
-            return disjunction;  
-        }
-
-        private List<Card> GetThoughnessList(string thoughness){
-            IEnumerable<Card> cards = GetCards();
-            List<Card> cardListPartial = new List<Card>();
-                foreach(var card in cards ){
-                if(card.Toughness == thoughness && !cardListPartial.Contains(card)){
-                        cardListPartial.Add(card);
-                    }
+            var disjunction = new HashSet<Card>(cardListR);
+            if(cardListM.Count != 65597){
+                disjunction.SymmetricExceptWith(cardListM);
             }
-            return cardListPartial;
-        }
-
-        private List<Card> GetPowerList(string power){
-            IEnumerable<Card> cards = GetCards();
-            List<Card> cardListPartial = new List<Card>();
-                foreach(var card in cards ){
-                if(card.Power == power && !cardListPartial.Contains(card)){
-                        cardListPartial.Add(card);
-                    }
-                }
-            return cardListPartial;
+            if(cardListP.Count != 65597){
+                disjunction.SymmetricExceptWith(cardListP);
+            }
+            if(cardListT.Count != 65597){   
+                disjunction.SymmetricExceptWith(cardListT);
+            }
+            return disjunction;  
         }
 
         private List<Card> GetRarityList(string rarity_code){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
-            foreach(var card in cards ){
-            if(card.RarityCode == rarity_code && !cardListPartial.Contains(card)){
+            if(rarity_code == null){
+                foreach(var card in cards ){
                     cardListPartial.Add(card);
+                }
+            }else{
+                foreach(var card in cards ){
+                    if(card.RarityCode == rarity_code){
+                        cardListPartial.Add(card);
+                    }
                 }
             }
             return cardListPartial;
@@ -140,10 +129,50 @@ namespace mtg_lib.Library.Services
         private List<Card> GetManaList(string converted_mana_cost){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
+            if(converted_mana_cost == null){
                 foreach(var card in cards ){
-                if(card.ConvertedManaCost == converted_mana_cost && !cardListPartial.Contains(card)){
+                    cardListPartial.Add(card);
+                }
+            }else{
+                foreach(var card in cards ){
+                    if(card.ConvertedManaCost == converted_mana_cost){
                         cardListPartial.Add(card);
                     }
+                }
+            }
+            return cardListPartial;
+        }
+
+        private List<Card> GetPowerList(string power){
+            IEnumerable<Card> cards = GetCards();
+            List<Card> cardListPartial = new List<Card>();
+            if(power == null){
+                foreach(var card in cards ){
+                    cardListPartial.Add(card);
+                }
+            }else{
+                foreach(var card in cards ){
+                    if(card.Power == power){
+                        cardListPartial.Add(card);
+                    }
+                }
+            }
+            return cardListPartial;
+        }
+
+        private List<Card> GetThoughnessList(string thoughness){
+            IEnumerable<Card> cards = GetCards();
+            List<Card> cardListPartial = new List<Card>();
+            if(thoughness == null){
+                foreach(var card in cards ){
+                    cardListPartial.Add(card);
+                }
+            }else{
+                foreach(var card in cards ){
+                    if(card.Toughness == thoughness){
+                        cardListPartial.Add(card);
+                    }
+                }
             }
             return cardListPartial;
         }
