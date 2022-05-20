@@ -96,26 +96,6 @@ namespace mtg_lib.Library.Services
             List<Card> cardListM = getManaList(converted_mana_cost);   
             List<Card> cardListP = getPowerList(power);
 
-            Boolean T = false;
-            Boolean R = false;
-            Boolean M = false;
-            Boolean P = false;
-
-            if((cardListT!= null) && (!cardListT.Any())){
-                T = true;
-            }
-            if((cardListR!= null) && (!cardListR.Any())){
-                R = true;
-            }
-            if((cardListM!= null) && (!cardListM.Any())){
-                M = true;
-            }
-            if((cardListP!= null) && (!cardListP.Any())){
-                P = true;
-            }
-            Console.WriteLine("T: " + thoughness + " R: " + rarity_code + " M: " + converted_mana_cost + " P: " + power);
-            Console.WriteLine("T: " + T + " R: " + R + " M: " + M + " P: " + P);
-
             var disjunction = new HashSet<Card>();
             disjunction.SymmetricExceptWith(cardListR);
             disjunction.SymmetricExceptWith(cardListM);
