@@ -91,10 +91,10 @@ namespace mtg_lib.Library.Services
 
         public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness)
         {
-            List<Card> cardListT = getThoughnessList(thoughness);
-            List<Card> cardListR = getRarityList(rarity_code);   
-            List<Card> cardListM = getManaList(converted_mana_cost);   
-            List<Card> cardListP = getPowerList(power);
+            List<Card> cardListT = GetThoughnessList(thoughness);
+            List<Card> cardListR = GetRarityList(rarity_code);   
+            List<Card> cardListM = GetManaList(converted_mana_cost);   
+            List<Card> cardListP = GetPowerList(power);
 
             var disjunction = new HashSet<Card>();
             disjunction.SymmetricExceptWith(cardListR);
@@ -104,7 +104,7 @@ namespace mtg_lib.Library.Services
             return disjunction;  
         }
 
-        private List<Card> getThoughnessList(string thoughness){
+        private List<Card> GetThoughnessList(string thoughness){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
                 foreach(var card in cards ){
@@ -115,7 +115,7 @@ namespace mtg_lib.Library.Services
             return cardListPartial;
         }
 
-        private List<Card> getPowerList(string power){
+        private List<Card> GetPowerList(string power){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
                 foreach(var card in cards ){
@@ -126,7 +126,7 @@ namespace mtg_lib.Library.Services
             return cardListPartial;
         }
 
-        private List<Card> getRarityList(string rarity_code){
+        private List<Card> GetRarityList(string rarity_code){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
             foreach(var card in cards ){
@@ -137,7 +137,7 @@ namespace mtg_lib.Library.Services
             return cardListPartial;
         }
 
-        private List<Card> getManaList(string converted_mana_cost){
+        private List<Card> GetManaList(string converted_mana_cost){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
                 foreach(var card in cards ){
