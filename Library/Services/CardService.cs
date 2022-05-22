@@ -113,68 +113,40 @@ namespace mtg_lib.Library.Services
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
             if(rarity_code == null){
-                foreach(var card in cards ){
-                    cardListPartial.Add(card);
-                }
+                return cards.ToList();
             }else{
-                foreach(var card in cards ){
-                    if(card.RarityCode == rarity_code){
-                        cardListPartial.Add(card);
-                    }
-                }
+                return cards.Where(c=>c.RarityCode == rarity_code).ToList();
             }
-            return cardListPartial;
         }
 
         private List<Card> GetManaList(string converted_mana_cost){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
             if(converted_mana_cost == null){
-                foreach(var card in cards ){
-                    cardListPartial.Add(card);
-                }
+                return cards.ToList();
             }else{
-                foreach(var card in cards ){
-                    if(card.ConvertedManaCost == converted_mana_cost){
-                        cardListPartial.Add(card);
-                    }
-                }
+                return cards.Where(c=>c.ConvertedManaCost == converted_mana_cost).ToList();
             }
-            return cardListPartial;
         }
 
         private List<Card> GetPowerList(string power){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
             if(power == null){
-                foreach(var card in cards ){
-                    cardListPartial.Add(card);
-                }
+                return cards.ToList();
             }else{
-                foreach(var card in cards ){
-                    if(card.Power == power){
-                        cardListPartial.Add(card);
-                    }
-                }
+                return cards.Where(c=>c.Power == power).ToList();
             }
-            return cardListPartial;
         }
 
         private List<Card> GetThoughnessList(string thoughness){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
             if(thoughness == null){
-                foreach(var card in cards ){
-                    cardListPartial.Add(card);
-                }
+                return cards.ToList();
             }else{
-                foreach(var card in cards ){
-                    if(card.Toughness == thoughness){
-                        cardListPartial.Add(card);
-                    }
-                }
+                return cards.Where(c=>c.Toughness == thoughness).ToList();
             }
-            return cardListPartial;
         }
 
         public List<String> getRarity(){
