@@ -170,7 +170,8 @@ namespace mtg_lib.Library.Services
                     powerList.Add(value);
                 }
             }
-            return powerList.OrderBy(p=>p).ToList();
+            powerList.Sort();
+            return powerList;
         }
 
         public List<int> getThoughness(){
