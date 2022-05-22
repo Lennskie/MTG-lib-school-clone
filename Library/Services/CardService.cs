@@ -1,4 +1,5 @@
-﻿using mtg_lib.Library.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using mtg_lib.Library.Models;
 
 
 namespace mtg_lib.Library.Services
@@ -6,6 +7,7 @@ namespace mtg_lib.Library.Services
     public class CardService
     {
         private mtgdevContext context;
+        private readonly UserCardService _userCardService = new UserCardService();
 
 
         public CardService()
@@ -20,12 +22,48 @@ namespace mtg_lib.Library.Services
 
         public IEnumerable<Card> GetSetAmountOfCards(int amount)
         {
-            if (amount != 0)
+            if (amount > 0)
             {
                 return GetCards().Take(amount);
             }
 
             return GetCards().Take(100);
+        }
+        
+        
+        public IEnumerable<Card> GetUserCardCollection(string userId, int amount)
+        {
+            IEnumerable<UserCard> userCards =  _userCardService.GetUserCardsForUser(userId);
+            IEnumerable<long> userCardsId = userCards.Select(c => c.CardId);
+            IEnumerable<Card> tradingCards = GetCards();
+
+            if (userCards.ToList().Any())
+            {
+                IEnumerable<Card> cardsListToReturn = new List<Card>();
+
+                //cardsListToReturn = tradingCards.Where(cardIds => userCardsId.Count(uc => uc == cardIds.Id) == 0);
+                
+
+                /*foreach (var usercard in userCards)
+                {
+                    foreach (var tradingCard in tradingCards)
+                    {
+                        if (usercard.CardId == tradingCard.Id)
+                        {
+                            cardsListToReturn.Append(tradingCard);
+                        }
+                    }
+                }*/
+                
+                if (amount > 0)
+                {
+                    Console.WriteLine("Returning users card collection!");
+                    return cardsListToReturn.Take(amount);
+                }
+                return cardsListToReturn.Take(100);
+                
+            }
+            return new List<Card>();
         }
 
         public Card? GetCardFromId(string cardId)

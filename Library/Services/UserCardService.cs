@@ -28,9 +28,9 @@ public class UserCardService
         Card? card = _cardService.GetCardFromId(mtgId);
         IEnumerable<UserCard> userCards =  GetUserCardsForUser(userId);
 
-        IEnumerable<UserCard> userCards2 = userCards.Where(c => c.CardId == card.Id);
-
-        if (userCards2.Any() && userCards2.First().Cards > 0)
+        IEnumerable<UserCard> userCardsFiltered = userCards.Where(c => c.CardId == card.Id);
+        
+        if (userCardsFiltered.Any() && userCardsFiltered.First().Cards >= 1)
         {
             return true;
         }
