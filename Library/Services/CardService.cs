@@ -78,19 +78,16 @@ namespace mtg_lib.Library.Services
 
             if (variations.Count != 0)
             {
-                string IdVariationCard = variations.First();
+                string idVariationCard = variations.First();
 
-                Card cardVariation = GetCards().Where(c => c.MtgId == IdVariationCard).First();
+                Card cardVariation = GetCards().Where(c => c.MtgId == idVariationCard).First();
 
                 if (cardVariation.OriginalImageUrl != null)
                 {
-                    //Console.WriteLine("Returning new image Url");
                     return cardVariation.OriginalImageUrl;
                 }
                 
             }
-            
-            //Console.WriteLine("No new image url to return!");
             return null;
         }
 
@@ -99,7 +96,7 @@ namespace mtg_lib.Library.Services
             List<Card> cardListR = GetRarityList(rarity_code);   
             List<Card> cardListM = GetManaList(converted_mana_cost);   
             List<Card> cardListP = GetPowerList(power);
-            List<Card> cardListT = GetThoughnessList(thoughness);
+            List<Card> cardListT = GetThoughnesList(thoughness);
 
             var disjunction = new HashSet<Card>(cardListR);
             if(cardListM.Count != 65597){
@@ -144,7 +141,7 @@ namespace mtg_lib.Library.Services
             }
         }
 
-        private List<Card> GetThoughnessList(string thoughness){
+        private List<Card> GetThoughnesList(string thoughness){
             IEnumerable<Card> cards = GetCards();
             List<Card> cardListPartial = new List<Card>();
             if(thoughness == null){
@@ -154,7 +151,7 @@ namespace mtg_lib.Library.Services
             }
         }
 
-        public List<String> getRarity(){
+        public List<String> GetRarity(){
             IEnumerable<Card> cards = GetCards();
             List<string> rarityList = new List<string>();
             foreach(var card in cards){
@@ -165,7 +162,7 @@ namespace mtg_lib.Library.Services
             return rarityList.OrderBy(r=>r).ToList();
         }
 
-        public List<int> getPower(){
+        public List<int> GetPower(){
             IEnumerable<Card> cards = GetCards();
             List<int> powerList = new List<int>();
             foreach(var card in cards){
@@ -179,7 +176,7 @@ namespace mtg_lib.Library.Services
             return powerList;
         }
 
-        public List<int> getThoughness(){
+        public List<int> GetThoughness(){
             IEnumerable<Card> cards = GetCards();
             List<int> thoughnessList = new List<int>();
             foreach(var card in cards){
@@ -193,7 +190,7 @@ namespace mtg_lib.Library.Services
             return thoughnessList;
         }
 
-        public List<int> getManaCosts(){
+        public List<int> GetManaCosts(){
             IEnumerable<Card> cards = GetCards();
             List<int> manaList = new List<int>();
             foreach(var card in cards){

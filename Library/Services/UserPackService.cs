@@ -3,13 +3,13 @@
 
 namespace mtg_lib.Library.Services
 {
-    public class PackService
+    public class UserPackService
     {
         private mtgdevContext context;
-        private CardService cardService = new CardService();
+        private readonly CardService _cardService = new CardService();
 
 
-        public PackService()
+        public UserPackService()
         {
             context = new mtgdevContext();
         }
@@ -62,7 +62,7 @@ namespace mtg_lib.Library.Services
 
         public IEnumerable<Card> CreateRandomPack(string rarity)
         {
-            IEnumerable<Card> cards = cardService.GetCards();
+            IEnumerable<Card> cards = _cardService.GetCards();
             
             // 15 Cards
             var r = new Random();
@@ -83,25 +83,6 @@ namespace mtg_lib.Library.Services
             IEnumerable<Card> cardPacks = basicCard.Concat(commonCards).Concat(uncommonCards).Concat(rareOrMythicCard).Select(c => c).ToList();
 
             return cardPacks;
-        }
-
-        private IEnumerable<Card> appendToList(IEnumerable<Card> toAppend)
-        {
-            IEnumerable<Card> toReturn = new List<Card>();
-
-            return toReturn;
-        }
-
-
-        public IEnumerable<Card> retrievePacks()
-        {
-            return new List<Card>();
-        }
-
-
-        public IEnumerable<Card> retrievePackInfo(string packId)
-        {
-            return new List<Card>();
         }
 
     }

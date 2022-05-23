@@ -1,9 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿
 using mtg_lib.Library.Models;
 
 namespace mtg_lib.Library.Services;
 
-public class CoinService
+public class UserCoinService
 {
     
     private mtgdevContext context;
@@ -12,7 +12,7 @@ public class CoinService
     private readonly int _dailyCoins = 50;
 
 
-    public CoinService()
+    public UserCoinService()
     {
         context = new mtgdevContext();
     }
