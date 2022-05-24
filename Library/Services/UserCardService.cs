@@ -99,5 +99,64 @@ public class UserCardService
             return matches;
         }
 
+        public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness, string userId)
+        {
+            List<Card> cardListR = GetRarityList(rarity_code, userId);   
+            List<Card> cardListM = GetManaList(converted_mana_cost, userId);   
+            List<Card> cardListP = GetPowerList(power, userId);
+            List<Card> cardListT = GetThoughnesList(thoughness, userId);
+
+            var disjunction = new HashSet<Card>(cardListR);
+            if(cardListM.Count != 65597){
+                disjunction.SymmetricExceptWith(cardListM);
+            }
+            if(cardListP.Count != 65597){
+                disjunction.SymmetricExceptWith(cardListP);
+            }
+            if(cardListT.Count != 65597){   
+                disjunction.SymmetricExceptWith(cardListT);
+            }
+            return disjunction;  
+        }
+
+         private List<Card> GetRarityList(string rarity_code, string userId){
+            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            List<Card> cardListPartial = new List<Card>();
+            if(rarity_code == null){
+                return cards.ToList();
+            }else{
+                return cards.Where(c=>c.RarityCode == rarity_code).ToList();
+            }
+        }
+
+        private List<Card> GetManaList(string converted_mana_cost, string userId){
+            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            List<Card> cardListPartial = new List<Card>();
+            if(converted_mana_cost == null){
+                return cards.ToList();
+            }else{
+                return cards.Where(c=>c.ConvertedManaCost == converted_mana_cost).ToList();
+            }
+        }
+
+        private List<Card> GetPowerList(string power, string userId){
+            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            List<Card> cardListPartial = new List<Card>();
+            if(power == null){
+                return cards.ToList();
+            }else{
+                return cards.Where(c=>c.Power == power).ToList();
+            }
+        }
+
+        private List<Card> GetThoughnesList(string thoughness, string userId){
+            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            List<Card> cardListPartial = new List<Card>();
+            if(thoughness == null){
+                return cards.ToList();
+            }else{
+                return cards.Where(c=>c.Toughness == thoughness).ToList();
+            }
+        }
 
 }
