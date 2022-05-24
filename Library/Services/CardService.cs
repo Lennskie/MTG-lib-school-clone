@@ -42,8 +42,6 @@ namespace mtg_lib.Library.Services
             return cards.SingleOrDefault(c => c.Id.ToString() == cardId);
         }
 
-
-
         public List<Card> GetCardFromString(string cardName)
         {
             IEnumerable<Card> cards = GetCards();

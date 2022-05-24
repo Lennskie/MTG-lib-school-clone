@@ -86,8 +86,18 @@ public class UserCardService
         }
         return convertList;
     }
-        //this is the service that cause the stackoverflow, we don't know how to fix this. This would've made for cleaner code
-        // TODO: move this over to UserCardService to maybe remove the stackoverflow error 
+
+    public List<Card> GetCardFromString(string cardName, string userId)
+        {
+            List<Card> cards = retrieveCardsInUserCollection(userId);
+            List<Card> matches = new List<Card>();
+
+            foreach(var card in cards){
+                if(card.Name.Contains(cardName)) matches.Add(card);
+            }
+
+            return matches;
+        }
 
 
 }
