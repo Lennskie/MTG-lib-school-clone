@@ -78,5 +78,16 @@ public class UserCardService
         }
     }
 
+    public List<Card> retrieveCardsInUserCollection(string userId){
+        List<UserCard> userCards = GetUserCardsForUser(userId).ToList();
+        List<Card> convertList = new List<Card>();
+        foreach (var card in userCards){
+            convertList.Add(_cardService.GetCardFromUserTableId(card.CardId.ToString()));
+        }
+        return convertList;
+    }
+        //this is the service that cause the stackoverflow, we don't know how to fix this. This would've made for cleaner code
+        // TODO: move this over to UserCardService to maybe remove the stackoverflow error 
+
 
 }
