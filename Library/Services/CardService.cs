@@ -42,16 +42,6 @@ namespace mtg_lib.Library.Services
             return cards.SingleOrDefault(c => c.Id.ToString() == cardId);
         }
 
-        //public List<Card> convertList(string userId){
-        //    List<UserCard> userCards = _userCardService.GetUserCardsForUser(userId).ToList();
-        //    List<Card> convertList = new List<Card>();
-        //    foreach (var card in userCards){
-        //        convertList.Add(GetCardFromUserTableId(card.CardId.ToString()));
-        //    }
-        //    return convertList;
-        //}
-        //this is the service that cause the stackoverflow, we don't know how to fix this. This would've made for cleaner code
-
         public List<Card> GetCardFromString(string cardName)
         {
             IEnumerable<Card> cards = GetCards();
