@@ -80,7 +80,7 @@ public class UserCoinService
 
         var difference = currentDateTime - userCoinDataTime;
 
-        if (difference.Value.Hours > 24)
+        if (difference != null && difference.Value.Hours > 24)
         {
             return false;
         }
@@ -102,13 +102,13 @@ public class UserCoinService
     }
 
 
-    public void DecreaseUserCoinBalance(string userId, int? amount)
+    public void DecreaseUserCoinBalance(string userId, int amount)
     {
         UserCoin userCoin = GetUserCoinFromId(userId);
 
         int coinBalance = userCoin.Coins;
 
-        userCoin.Coins = (int) (coinBalance - amount);
+        userCoin.Coins = coinBalance - amount;
 
         context.Update(userCoin);
         context.SaveChanges();

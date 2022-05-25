@@ -67,12 +67,13 @@ namespace mtg_lib.Library.Services
                 
                 var splitVariations = card?.Variations?.Split(',');
 
-                foreach (var mtgid in splitVariations)
-                {
-                    var newId = mtgid.Trim(charsToTrim);
+                if (splitVariations != null)
+                    foreach (var mtgid in splitVariations)
+                    {
+                        var newId = mtgid.Trim(charsToTrim);
 
-                    variationsList.Add(newId);
-                }
+                        variationsList.Add(newId);
+                    }
             }
 
             return variationsList;
@@ -98,12 +99,12 @@ namespace mtg_lib.Library.Services
             return null;
         }
 
-        public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness)
+        public IEnumerable<Card> GetCardsByFilters(string rarityCode, string convertedManaCost, string power, string thoughness)
         {
-            List<Card> cardListR = GetRarityList(rarity_code);   
-            List<Card> cardListM = GetManaList(converted_mana_cost);   
+            List<Card> cardListR = GetRarityList(rarityCode);   
+            List<Card> cardListM = GetManaList(convertedManaCost);   
             List<Card> cardListP = GetPowerList(power);
-            List<Card> cardListT = GetThoughnesList(thoughness);
+            List<Card> cardListT = GetThoughnessList(thoughness);
 
             var disjunction = new HashSet<Card>(cardListR);
             if(cardListM.Count != 65597){
@@ -118,44 +119,42 @@ namespace mtg_lib.Library.Services
             return disjunction;  
         }
 
-        private List<Card> GetRarityList(string rarity_code){
+        private List<Card> GetRarityList(string rarityCode){
             IEnumerable<Card> cards = GetCards();
-            List<Card> cardListPartial = new List<Card>();
-            if(rarity_code == null){
+
+            if(rarityCode == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.RarityCode == rarity_code).ToList();
             }
+            return cards.Where(c=>c.RarityCode == rarityCode).ToList();
         }
 
-        private List<Card> GetManaList(string converted_mana_cost){
+        private List<Card> GetManaList(string convertedManaCost){
             IEnumerable<Card> cards = GetCards();
-            List<Card> cardListPartial = new List<Card>();
-            if(converted_mana_cost == null){
+            
+            if(convertedManaCost == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.ConvertedManaCost == converted_mana_cost).ToList();
             }
+
+            return cards.Where(c=>c.ConvertedManaCost == convertedManaCost).ToList();
         }
 
         private List<Card> GetPowerList(string power){
             IEnumerable<Card> cards = GetCards();
-            List<Card> cardListPartial = new List<Card>();
+
             if(power == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.Power == power).ToList();
             }
+
+            return cards.Where(c=>c.Power == power).ToList();
         }
 
-        private List<Card> GetThoughnesList(string thoughness){
+        private List<Card> GetThoughnessList(string thoughness){
             IEnumerable<Card> cards = GetCards();
-            List<Card> cardListPartial = new List<Card>();
             if(thoughness == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.Toughness == thoughness).ToList();
             }
+
+            return cards.Where(c=>c.Toughness == thoughness).ToList();
         }
 
         public List<String> GetRarity(){
