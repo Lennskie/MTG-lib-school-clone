@@ -48,7 +48,6 @@ public class UserCardService
             if (cardMtgId != null)
             {
                 Card? card = _cardService.GetCardFromId(cardMtgId);
-                //Console.WriteLine("MtgID: " + cardMtgId + " Card Id: " + card.Id);
 
                 bool userCardPresence = userCards.Select(c => c.CardId).Contains(card.Id);
 
@@ -60,8 +59,6 @@ public class UserCardService
 
                     context.UserCards.Update(userCard);
                     context.SaveChanges();
-                    
-                    //Console.WriteLine("Updating existing userCard");
                 }
                 else
                 {
@@ -73,8 +70,6 @@ public class UserCardService
 
                     context.UserCards.Add(newUserCard);
                     context.SaveChanges();
-                
-                    //Console.WriteLine("Adding new UserCard");
                 }
             }
         }
@@ -101,10 +96,10 @@ public class UserCardService
             return matches;
         }
 
-        public IEnumerable<Card> GetCardsByFilters(string rarity_code, string converted_mana_cost, string power, string thoughness, string userId)
+        public IEnumerable<Card> GetCardsByFilters(string rarityCode, string convertedManaCost, string power, string thoughness, string userId)
         {
-            List<Card> cardListR = GetRarityList(rarity_code, userId);   
-            List<Card> cardListM = GetManaList(converted_mana_cost, userId);   
+            List<Card> cardListR = GetRarityList(rarityCode, userId);   
+            List<Card> cardListM = GetManaList(convertedManaCost, userId);   
             List<Card> cardListP = GetPowerList(power, userId);
             List<Card> cardListT = GetThoughnesList(thoughness, userId);
 
@@ -121,44 +116,44 @@ public class UserCardService
             return disjunction;  
         }
 
-         private List<Card> GetRarityList(string rarity_code, string userId){
+         private List<Card> GetRarityList(string rarityCode, string userId){
             IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
-            List<Card> cardListPartial = new List<Card>();
-            if(rarity_code == null){
+            
+            if(rarityCode == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.RarityCode == rarity_code).ToList();
             }
-        }
 
-        private List<Card> GetManaList(string converted_mana_cost, string userId){
+            return cards.Where(c=>c.RarityCode == rarityCode).ToList();
+         }
+
+        private List<Card> GetManaList(string convertedManaCost, string userId){
             IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
-            List<Card> cardListPartial = new List<Card>();
-            if(converted_mana_cost == null){
+            
+            if(convertedManaCost == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.ConvertedManaCost == converted_mana_cost).ToList();
             }
+
+            return cards.Where(c=>c.ConvertedManaCost == convertedManaCost).ToList();
         }
 
         private List<Card> GetPowerList(string power, string userId){
             IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
-            List<Card> cardListPartial = new List<Card>();
+
             if(power == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.Power == power).ToList();
             }
+
+            return cards.Where(c=>c.Power == power).ToList();
         }
 
         private List<Card> GetThoughnesList(string thoughness, string userId){
             IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
-            List<Card> cardListPartial = new List<Card>();
+            
             if(thoughness == null){
                 return cards.ToList();
-            }else{
-                return cards.Where(c=>c.Toughness == thoughness).ToList();
             }
+            
+            return cards.Where(c=>c.Toughness == thoughness).ToList();
         }
 
 }
