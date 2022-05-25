@@ -28,7 +28,7 @@ public class UserCardService
         Card? card = _cardService.GetCardFromId(mtgId);
         IEnumerable<UserCard> userCards =  GetUserCardsForUser(userId);
 
-        IEnumerable<UserCard> userCards2 = userCards.Where(c => c.CardId == card.Id);
+        IEnumerable<UserCard> userCards2 = userCards.Where(c => card != null && c.CardId == card.Id);
 
         if (userCards2.Any() && userCards2.First().Cards > 0)
         {
@@ -38,58 +38,60 @@ public class UserCardService
         return false;
     }
 
-    public void AddCardsToUserCards(string userId, IEnumerable<string> cardMtgIds)
+    public void AddCardsToUserCards(string userId, IEnumerable<string?> cardMtgIds)
     {
         IEnumerable<UserCard> userCards =  GetUserCardsForUser(userId);
         
 
         foreach (var cardMtgId in cardMtgIds)
         {
-            Card? card = _cardService.GetCardFromId(cardMtgId);
-            //Console.WriteLine("MtgID: " + cardMtgId + " Card Id: " + card.Id);
-
-            bool userCardPresence = userCards.Select(c => c.CardId).Contains(card.Id);
-
-            if (userCardPresence)
+            if (cardMtgId != null)
             {
-                UserCard userCard = userCards.First(c => c.CardId == card.Id); 
-                
-                userCard.Cards += 1;
+                Card? card = _cardService.GetCardFromId(cardMtgId);
+                //Console.WriteLine("MtgID: " + cardMtgId + " Card Id: " + card.Id);
 
-                context.UserCards.Update(userCard);
-                context.SaveChanges();
+                bool userCardPresence = userCards.Select(c => c.CardId).Contains(card.Id);
+
+                if (userCardPresence)
+                {
+                    UserCard userCard = userCards.First(c => c.CardId == card.Id); 
+                
+                    userCard.Cards += 1;
+
+                    context.UserCards.Update(userCard);
+                    context.SaveChanges();
                     
-                //Console.WriteLine("Updating existing userCard");
-            }
-            else
-            {
-                UserCard newUserCard = new UserCard();
+                    //Console.WriteLine("Updating existing userCard");
+                }
+                else
+                {
+                    UserCard newUserCard = new UserCard();
 
-                newUserCard.UserId = userId;
-                newUserCard.CardId = card.Id;
-                newUserCard.Cards = 1;
+                    newUserCard.UserId = userId;
+                    newUserCard.CardId = card.Id;
+                    newUserCard.Cards = 1;
 
-                context.UserCards.Add(newUserCard);
-                context.SaveChanges();
+                    context.UserCards.Add(newUserCard);
+                    context.SaveChanges();
                 
-                //Console.WriteLine("Adding new UserCard");
+                    //Console.WriteLine("Adding new UserCard");
+                }
             }
-            
         }
     }
 
-    public List<Card> retrieveCardsInUserCollection(string userId){
+    public List<Card> RetrieveCardsInUserCollection(string userId){
         List<UserCard> userCards = GetUserCardsForUser(userId).ToList();
-        List<Card> convertList = new List<Card>();
+        List<Card> cardsInUserCollection = new List<Card>();
         foreach (var card in userCards){
-            convertList.Add(_cardService.GetCardFromUserTableId(card.CardId.ToString()));
+            cardsInUserCollection.Add(_cardService.GetCardFromUserTableId(card.CardId.ToString()));
         }
-        return convertList;
+        return cardsInUserCollection;
     }
 
     public List<Card> GetCardFromString(string cardName, string userId)
         {
-            List<Card> cards = retrieveCardsInUserCollection(userId);
+            List<Card> cards = RetrieveCardsInUserCollection(userId);
             List<Card> matches = new List<Card>();
 
             foreach(var card in cards){
@@ -120,7 +122,7 @@ public class UserCardService
         }
 
          private List<Card> GetRarityList(string rarity_code, string userId){
-            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
             List<Card> cardListPartial = new List<Card>();
             if(rarity_code == null){
                 return cards.ToList();
@@ -130,7 +132,7 @@ public class UserCardService
         }
 
         private List<Card> GetManaList(string converted_mana_cost, string userId){
-            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
             List<Card> cardListPartial = new List<Card>();
             if(converted_mana_cost == null){
                 return cards.ToList();
@@ -140,7 +142,7 @@ public class UserCardService
         }
 
         private List<Card> GetPowerList(string power, string userId){
-            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
             List<Card> cardListPartial = new List<Card>();
             if(power == null){
                 return cards.ToList();
@@ -150,7 +152,7 @@ public class UserCardService
         }
 
         private List<Card> GetThoughnesList(string thoughness, string userId){
-            IEnumerable<Card> cards = retrieveCardsInUserCollection(userId);
+            IEnumerable<Card> cards = RetrieveCardsInUserCollection(userId);
             List<Card> cardListPartial = new List<Card>();
             if(thoughness == null){
                 return cards.ToList();
